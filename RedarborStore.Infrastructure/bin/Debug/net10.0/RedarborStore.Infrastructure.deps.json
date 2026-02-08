@@ -1,0 +1,56 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v10.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v10.0": {
+      "RedarborStore.Infrastructure/1.0.0": {
+        "dependencies": {
+          "RedarborStore.Application": "1.0.0",
+          "RedarborStore.Domain": "1.0.0"
+        },
+        "runtime": {
+          "RedarborStore.Infrastructure.dll": {}
+        }
+      },
+      "RedarborStore.Application/1.0.0": {
+        "dependencies": {
+          "RedarborStore.Domain": "1.0.0"
+        },
+        "runtime": {
+          "RedarborStore.Application.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "RedarborStore.Domain/1.0.0": {
+        "runtime": {
+          "RedarborStore.Domain.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "RedarborStore.Infrastructure/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "RedarborStore.Application/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "RedarborStore.Domain/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

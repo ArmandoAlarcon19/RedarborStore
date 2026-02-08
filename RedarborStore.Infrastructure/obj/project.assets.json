@@ -1,11 +1,49 @@
 {
   "version": 3,
   "targets": {
-    "net10.0": {}
+    "net10.0": {
+      "RedarborStore.Application/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v10.0",
+        "dependencies": {
+          "RedarborStore.Domain": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/RedarborStore.Application.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/RedarborStore.Application.dll": {}
+        }
+      },
+      "RedarborStore.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v10.0",
+        "compile": {
+          "bin/placeholder/RedarborStore.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/RedarborStore.Domain.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "RedarborStore.Application/1.0.0": {
+      "type": "project",
+      "path": "../RedarborStore.Application/RedarborStore.Application.csproj",
+      "msbuildProject": "../RedarborStore.Application/RedarborStore.Application.csproj"
+    },
+    "RedarborStore.Domain/1.0.0": {
+      "type": "project",
+      "path": "../RedarborStore.Domain/RedarborStore.Domain.csproj",
+      "msbuildProject": "../RedarborStore.Domain/RedarborStore.Domain.csproj"
+    }
+  },
   "projectFileDependencyGroups": {
-    "net10.0": []
+    "net10.0": [
+      "RedarborStore.Application >= 1.0.0",
+      "RedarborStore.Domain >= 1.0.0"
+    ]
   },
   "packageFolders": {
     "/Users/armandoalarcon/.nuget/packages/": {}
@@ -31,7 +69,14 @@
       "frameworks": {
         "net10.0": {
           "targetAlias": "net10.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "/Users/armandoalarcon/Documents/Store/RedarborStore.Application/RedarborStore.Application.csproj": {
+              "projectPath": "/Users/armandoalarcon/Documents/Store/RedarborStore.Application/RedarborStore.Application.csproj"
+            },
+            "/Users/armandoalarcon/Documents/Store/RedarborStore.Domain/RedarborStore.Domain.csproj": {
+              "projectPath": "/Users/armandoalarcon/Documents/Store/RedarborStore.Domain/RedarborStore.Domain.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
