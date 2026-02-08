@@ -1,0 +1,14 @@
+RedarborStore.Infrastructure/bin/
+RedarborStore.Infrastructure/obj/
+
+RedarborStore.Domain.Tests/bin/
+RedarborStore.Domain.Tests/obj/
+
+RedarborStore.Domain/bin/
+RedarborStore.Domain/obj/
+
+RedarborStore.Application/bin/
+RedarborStore.Application/obj/
+
+RedarborStore.Api/bin/
+RedarborStore.Api/obj/
