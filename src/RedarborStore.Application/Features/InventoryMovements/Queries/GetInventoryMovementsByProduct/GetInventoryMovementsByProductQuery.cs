@@ -1,7 +1,7 @@
 using Application.DTOs.Responses;
 using MediatR;
 
-namespace RedarborStore.Application.Features.InventoryMovements.Queries.GetByProductInventoryMovements;
+namespace RedarborStore.Application.Features.InventoryMovements.Queries.GetInventoryMovementsByProduct;
 
 public class GetInventoryMovementsByProductQuery : IRequest<IEnumerable<InventoryMovementResponseDto>>
 {

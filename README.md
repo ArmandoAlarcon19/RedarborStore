@@ -55,7 +55,6 @@ Verify:
 dotnet --version
 docker --version
 docker compose version
----
 ```
 
 ## Environment Variables Configuration
@@ -82,6 +81,7 @@ docker compose up -d --build
 
 Services:
 - `db`: SQL Server
+- `data init`: Load principal data
 - `api`: RedarborStore API
 
 Swagger:
@@ -118,11 +118,11 @@ SQL script located at `./init.sql` executed when the container starts
 - `DELETE /products/{id}` → delete product *(Dapper - Command)*
 
 ### Categories
-- `GET /categories` *(EF Core - Query)*
-- `GET /categories/{id}` *(EF Core - Query)*
-- `POST /categories` *(Dapper - Command)*
-- `PUT /categories/{id}` *(Dapper - Command)*
-- `DELETE /categories/{id}` *(Dapper - Command)*
+- `GET /categories` → list categories *(EF Core - Query)*
+- `GET /categories/{id}` → get category by id  *(EF Core - Query)*
+- `POST /categories` → create category *(Dapper - Command)*
+- `PUT /categories/{id}` → update category *(Dapper - Command)*
+- `DELETE /categories/{id}` → delete category *(Dapper - Command)*
 
 ### Inventory Movements
 - `POST /inventory/movements` → register inbound/outbound movement *(Dapper - Command)*

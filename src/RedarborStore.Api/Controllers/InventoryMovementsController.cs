@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using RedarborStore.Application.Features.InventoryMovements.Commands.CreateInventoryMovement;
 using RedarborStore.Application.Features.InventoryMovements.Queries.GetAllInventoryMovements;
 using RedarborStore.Application.Features.InventoryMovements.Queries.GetByProductInventoryMovements;
+using RedarborStore.Application.Features.InventoryMovements.Queries.GetInventoryMovementsByProduct;
 
 namespace RedarborStore.Api.Controllers;
 

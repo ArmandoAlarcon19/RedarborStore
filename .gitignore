@@ -10,6 +10,8 @@
 /src/RedarborStore.Infrastructure/obj/
 /tests/RedarborStore.Domain.Tests/bin/
 /tests/RedarborStore.Domain.Tests/obj/
+/tests/RedarborStore.Application.Tests/bin/
+/tests/RedarborStore.Application.Tests/obj/
 appsettings.Development.json
 .env
 packages/
