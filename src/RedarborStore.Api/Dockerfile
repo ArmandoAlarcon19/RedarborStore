@@ -8,7 +8,7 @@ COPY src/RedarborStore.Application/RedarborStore.Application.csproj       src/Re
 COPY src/RedarborStore.Infrastructure/RedarborStore.Infrastructure.csproj src/RedarborStore.Infrastructure/
 COPY src/RedarborStore.Api/RedarborStore.Api.csproj                       src/RedarborStore.Api/
 COPY tests/RedarborStore.Domain.Tests/RedarborStore.Domain.Tests.csproj   tests/RedarborStore.Domain.Tests/
-
+COPY tests/RedarborStore.Application.Tests/RedarborStore.Application.Tests.csproj   tests/RedarborStore.Application.Tests/
 RUN dotnet restore
 
 COPY src/ src/

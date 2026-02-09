@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RedarborStore.Application.Features.Categories.Commands.CreateCategory;
 using RedarborStore.Application.Features.Categories.Commands.DeleteCategory;
@@ -20,6 +21,7 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize(Policy = "CanRead")]
     public async Task<IActionResult> GetAll()
     {
         var result = await _mediator.Send(new GetAllCategoriesQuery());
@@ -27,6 +29,7 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [Authorize(Policy = "CanRead")]
     public async Task<IActionResult> GetById(int id)
     {
         var result = await _mediator.Send(new GetCategoryByIdQuery { Id = id });
@@ -35,6 +38,7 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Policy = "CanWrite")]
     public async Task<IActionResult> Create([FromBody] CreateCategoryCommand command)
     {
         var id = await _mediator.Send(command);
@@ -42,6 +46,7 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize(Policy = "CanWrite")]
     public async Task<IActionResult> Update(int id, [FromBody] UpdateCategoryCommand command)
     {
         command.Id = id;
@@ -51,6 +56,7 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Policy = "CanDelete")]
     public async Task<IActionResult> Delete(int id)
     {
         var result = await _mediator.Send(new DeleteCategoryCommand { Id = id });
