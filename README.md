@@ -1,126 +1,123 @@
 # Redarbor Store API
 
-## Objetivo
-**API RESTful** para gestionar un sistema de inventario de productos.
+## Objective
+**RESTful API** to manage a product inventory system.
 
 ---
 
-## Stack Tecnológico
+## Technology Stack
 
 - **.NET 6**
 - **ASP.NET Core Web API** (Minimal API)
-- **EF Core** (solo lectura)
-- **Dapper** (solo escritura)
+- **EF Core** (read-only)
+- **Dapper** (write-only)
 - **SQL Server** (Docker)
 - **Swagger (Swashbuckle)**
 - **xUnit** (unit testing)
 
 ---
 
-## Arquitectura
+## Architecture
 
-La solución está organizada por capas siguiendo un enfoque tipo **Clean Architecture**:
+The solution is organized by layers following a **Clean Architecture** approach:
 
 - **Redarbor.Domain**
-  - Entidades, Value Objects, reglas de negocio, eventos de dominio.
-  - No depende de EF Core, ASP.NET, ni librerías externas.
+  - Entities, Value Objects, business rules, domain events.
+  - Does not depend on EF Core, ASP.NET, or external libraries.
 
 - **Redarbor.Application**
-  - Casos de uso (CQRS): `Commands`, `Queries`, `Handlers`, `DTOs`.
-  - Validaciones (FluentValidation).
-  - Interfaces (repositorios, UnitOfWork, etc.).
+  - Use cases (CQRS): `Commands`, `Queries`, `Handlers`, `DTOs`.
+  - Validations (FluentValidation).
+  - Interfaces (repositories, Unit of Work, etc.).
 
 - **Redarbor.Infrastructure**
-  - Persistencia:
-    - **EF Core** para consultas.
-    - **Dapper** para comandos.
-  - SQL Server, DbContext, repositorios, migraciones (si aplica).
-  - Configuración de acceso a datos.
+  - Persistence:
+    - **EF Core** for queries.
+    - **Dapper** for commands.
+  - SQL Server, DbContext, repositories, migrations (if applicable).
+  - Data access configuration.
 
 - **Redarbor.Api**
-  - Minimal API endpoints, DI, middleware, autenticación, swagger.
+  - Minimal API endpoints, DI, middleware, authentication, Swagger.
 
 - **Tests**
-  - `Redarbor.Domain.Tests`: pruebas unitarias del dominio.
-  - `Redarbor.Application.Tests`: pruebas unitarias de handlers/casos de uso.
+  - `Redarbor.Domain.Tests`: domain unit tests.
+  - `Redarbor.Application.Tests`: unit tests for handlers/use cases.
 
 ---
 
-## Requisitos Previos
+## Prerequisites
 
 ### Local
 - [.NET SDK 6](https://dotnet.microsoft.com/download/dotnet/6.0)
 - [Docker + Docker Compose](https://www.docker.com/products/docker-desktop/)
 
-Verificar:
+Verify:
 ```bash
 dotnet --version
 docker --version
 docker compose version
+---
 ```
 
----
+## Environment Variables Configuration
 
-## Configuración de variables de entorno
+This project uses configuration via `appsettings.json` and environment variables.
 
-Este proyecto usa configuración por `appsettings.json`/variables de entorno.
-
-Variables típicas:
-- `ConnectionStrings__SqlServer` → Connection string a SQL Server
-- Configuración OAuth2 (depende del proveedor):
+Typical variables:
+- `ConnectionStrings__SqlServer` → SQL Server connection string
+- OAuth2 configuration (depends on the provider):
   - `Auth__Authority`
   - `Auth__Audience`
   - `SwaggerOAuth__ClientId`
 
-> Nota: La configuración exacta de OAuth2 depende del proveedor (Auth0, Keycloak, Azure Entra ID, etc.). Ver sección **OAuth2**.
+> Note: The exact OAuth2 configuration depends on the provider (Auth0, Keycloak, Azure Entra ID, etc.). See the **OAuth2** section.
 
 ---
 
-## Ejecución con Docker (API + DB)
+## Running with Docker (API + DB)
 
-### Levantar API y BD con carga inicial
+### Start API and DB with initial data
 ```bash
 docker compose up -d --build
 ```
 
-Servicios:
+Services:
 - `db`: SQL Server
 - `api`: RedarborStore API
 
 Swagger:
 - `http://localhost:5001/swagger`
 
-### Detener
+### Stop
 ```bash
 docker compose down -v
 ```
 
 ---
 
-## Base de Datos
+## Database
 
-### Esquema
-Incluye al menos:
-- **Productos**
-- **Categorías**
-- **Movimientos de Inventario** (entrada/salida)
+### Eschema
+Includes at least:
+- **Products**
+- **Categories**
+- **Inventory Movements (inbound/outbound)**
 
-> Importante: **No se usan FOREIGN KEYS** por requerimiento.  
-La consistencia referencial debe manejarse a nivel de aplicación (validaciones y reglas de negocio).
+> Important: **FOREIGN KEYS are not used** by requirement.  
 
-### Migraciones / creación de tablas
-Script SQL en `./init.sql` ejecutado al iniciar el contenedor
-
+### Table Creation
+SQL script located at `./init.sql` executed when the container starts
 
 ---
 
 ## Endpoints
 ### Productos
-- `GET /products` → listar productos *(EF Core - Query)*
-- `GET /products/{id}` → obtener producto por id *(EF Core - Query)*
-- `POST /products` → crear producto *(Dapper - Command)*
-- `PUT /products/{id}` → actualizar producto *(Dapper - Command)*
-- `DELETE /products/{id}` → eliminar producto *(Dapper - Command)*
+- `GET /products` → list products *(EF Core - Query)*
+- `GET /products/{id}` → get product by id *(EF Core - Query)*
+- `POST /products` → create product *(Dapper - Command)*
+- `PUT /products/{id}` → update product *(Dapper - Command)*
+- `DELETE /products/{id}` → delete product *(Dapper - Command)*
 
 ### Categorías
 - `GET /categories` *(EF Core - Query)*

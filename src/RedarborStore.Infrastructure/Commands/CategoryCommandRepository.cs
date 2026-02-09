@@ -25,8 +25,8 @@ public class CategoryCommandRepository : ICategoryCommandRepository
             INSERT INTO Categories (Name, Description, CreatedDate)
             VALUES (@Name, @Description, GETDATE());
             SELECT CAST(SCOPE_IDENTITY() AS INT);";
-
         using var connection = CreateConnection();
+        
         return await connection.ExecuteScalarAsync<int>(sql, new
         {
             category.Name,
@@ -41,7 +41,6 @@ public class CategoryCommandRepository : ICategoryCommandRepository
             SET Name        = @Name,
                 Description = @Description
             WHERE Id = @Id;";
-
         using var connection = CreateConnection();
         var rowsAffected = await connection.ExecuteAsync(sql, new
         {
@@ -58,9 +57,9 @@ public class CategoryCommandRepository : ICategoryCommandRepository
         const string sql = @"
             DELETE FROM Categories
             WHERE Id = @Id;";
-
         using var connection = CreateConnection();
         var rowsAffected = await connection.ExecuteAsync(sql, new { Id = id });
+        
         return rowsAffected > 0;
     }
 }

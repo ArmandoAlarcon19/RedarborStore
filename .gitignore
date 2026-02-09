@@ -1,5 +1,15 @@
-bin/
-obj/
+/.gitignore
+
+/src/RedarborStore.Api/bin/
+/src/RedarborStore.Api/obj/
+/src/RedarborStore.Application/bin/
+/src/RedarborStore.Application/obj/
+/src/RedarborStore.Domain/bin/
+/src/RedarborStore.Domain/obj/
+/src/RedarborStore.Infrastructure/bin/
+/src/RedarborStore.Infrastructure/obj/
+/tests/RedarborStore.Domain.Tests/bin/
+/tests/RedarborStore.Domain.Tests/obj/
 appsettings.Development.json
 .env
 packages/

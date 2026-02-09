@@ -25,8 +25,8 @@ public class InventoryMovementCommandRepository : IInventoryMovementCommandRepos
             INSERT INTO InventoryMovements (ProductId, MovementType, Quantity, Reason, MovementDate)
             VALUES (@ProductId, @MovementType, @Quantity, @Reason, GETDATE());
             SELECT CAST(SCOPE_IDENTITY() AS INT);";
-
         using var connection = CreateConnection();
+        
         return await connection.ExecuteScalarAsync<int>(sql, new
         {
             movement.ProductId,

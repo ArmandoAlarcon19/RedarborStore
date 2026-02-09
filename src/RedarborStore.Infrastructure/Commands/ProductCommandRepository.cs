@@ -25,8 +25,8 @@ public class ProductCommandRepository : IProductCommandRepository
             INSERT INTO Products (Name, Description, Price, Stock, CategoryId, CreatedDate)
             VALUES (@Name, @Description, @Price, @Stock, @CategoryId, GETDATE());
             SELECT CAST(SCOPE_IDENTITY() AS INT);";
-
         using var connection = CreateConnection();
+        
         return await connection.ExecuteScalarAsync<int>(sql, new
         {
             product.Name,
@@ -47,7 +47,6 @@ public class ProductCommandRepository : IProductCommandRepository
                 CategoryId  = @CategoryId,
                 UpdatedDate   = GETDATE()
             WHERE Id = @Id;";
-
         using var connection = CreateConnection();
         var rowsAffected = await connection.ExecuteAsync(sql, new
         {
@@ -63,15 +62,12 @@ public class ProductCommandRepository : IProductCommandRepository
 
     public async Task<bool> DeleteAsync(int id)
     {
-        // Soft delete — sets IsActive to false
         const string sql = @"
-            UPDATE Products
-            SET IsActive  = 0,
-                UpdatedDate = GETDATE()
+            DELETE FROM Products
             WHERE Id = @Id;";
-
         using var connection = CreateConnection();
         var rowsAffected = await connection.ExecuteAsync(sql, new { Id = id });
+        
         return rowsAffected > 0;
     }
 
@@ -82,7 +78,6 @@ public class ProductCommandRepository : IProductCommandRepository
             SET Stock     = @NewStock,
                 UpdatedDate = GETDATE()
             WHERE Id = @ProductId;";
-
         using var connection = CreateConnection();
         var rowsAffected = await connection.ExecuteAsync(sql, new
         {
