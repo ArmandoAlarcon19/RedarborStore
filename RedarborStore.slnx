@@ -1,7 +1,7 @@
 <Solution>
-  <Project Path="RedarborStore.Api/RedarborStore.Api.csproj" />
-  <Project Path="RedarborStore.Application/RedarborStore.Application.csproj" />
-  <Project Path="RedarborStore.Domain.Tests/RedarborStore.Domain.Tests.csproj" />
-  <Project Path="RedarborStore.Domain/RedarborStore.Domain.csproj" />
-  <Project Path="RedarborStore.Infrastructure/RedarborStore.Infrastructure.csproj" />
+  <Project Path="src/RedarborStore.Api/RedarborStore.Api.csproj" />
+  <Project Path="src/RedarborStore.Application/RedarborStore.Application.csproj" />
+  <Project Path="tests/RedarborStore.Domain.Tests/RedarborStore.Domain.Tests.csproj" />
+  <Project Path="src/RedarborStore.Domain/RedarborStore.Domain.csproj" />
+  <Project Path="src/RedarborStore.Infrastructure/RedarborStore.Infrastructure.csproj" />
 </Solution>

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("RedarborStore.Application")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+84cd2b4e780d3a64a130f832f5d2e224c6ad6e2d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+03988f36a6b3e6328b3ac38319eff18eb3c4f5a0")]
 [assembly: System.Reflection.AssemblyProductAttribute("RedarborStore.Application")]
 [assembly: System.Reflection.AssemblyTitleAttribute("RedarborStore.Application")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
