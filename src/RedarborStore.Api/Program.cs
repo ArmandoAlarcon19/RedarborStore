@@ -65,7 +65,6 @@ builder.Services.AddOpenApi("v1", options =>
                 }
             }
         };
-
         return Task.CompletedTask;
     });
 
@@ -120,20 +119,6 @@ builder.Services.AddOpenApi("v1", options =>
     });
 });
 
-builder.Services.AddCors(options =>
-    {
-        options.AddPolicy("AllowSwagger", policy =>
-        {
-            policy
-                .WithOrigins(
-                    "http://localhost:5001",
-                    "http://localhost:8081")
-                .AllowAnyHeader()
-                .AllowAnyMethod();
-        });
-    });
-
-
 var app = builder.Build();
 
     if (app.Environment.IsDevelopment())
@@ -142,14 +127,14 @@ var app = builder.Build();
         app.MapScalarApiReference(options =>
         {
             options
+                .AddAuthorizationCodeFlow("OAuth2", oauth =>
+                {
+                    oauth.ClientId = builder.Configuration["Auth0:ClientId"];
+                })
                 .WithTitle("RedarborStore API")
                 .WithTheme(ScalarTheme.Moon)
                 .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient)
-                .AddPreferredSecuritySchemes("OAuth2")
-                .WithOAuth2Authentication(oauth =>
-                {
-                    oauth.ClientId = builder.Configuration["Auth0:ClientId"];
-                });
+                .AddPreferredSecuritySchemes("OAuth2");
         });
     }
 
