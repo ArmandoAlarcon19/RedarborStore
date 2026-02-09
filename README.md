@@ -7,7 +7,7 @@
 
 ## Technology Stack
 
-- **.NET 6**
+- **.NET 10**
 - **ASP.NET Core Web API** (Minimal API)
 - **EF Core** (read-only)
 - **Dapper** (write-only)
@@ -23,18 +23,16 @@ The solution is organized by layers following a **Clean Architecture** approach:
 
 - **Redarbor.Domain**
   - Entities, Value Objects, business rules, domain events.
-  - Does not depend on EF Core, ASP.NET, or external libraries.
 
 - **Redarbor.Application**
   - Use cases (CQRS): `Commands`, `Queries`, `Handlers`, `DTOs`.
-  - Validations (FluentValidation).
-  - Interfaces (repositories, Unit of Work, etc.).
+  - Validations.
+  - Interfaces.
 
 - **Redarbor.Infrastructure**
   - Persistence:
     - **EF Core** for queries.
-    - **Dapper** for commands.
-  - SQL Server, DbContext, repositories, migrations (if applicable).
+    - **Dapper** for commands..
   - Data access configuration.
 
 - **Redarbor.Api**
@@ -119,76 +117,76 @@ SQL script located at `./init.sql` executed when the container starts
 - `PUT /products/{id}` → update product *(Dapper - Command)*
 - `DELETE /products/{id}` → delete product *(Dapper - Command)*
 
-### Categorías
+### Categories
 - `GET /categories` *(EF Core - Query)*
 - `GET /categories/{id}` *(EF Core - Query)*
 - `POST /categories` *(Dapper - Command)*
 - `PUT /categories/{id}` *(Dapper - Command)*
 - `DELETE /categories/{id}` *(Dapper - Command)*
 
-### Movimientos de inventario
-- `POST /inventory/movements` → registrar entrada/salida *(Dapper - Command)*
-- `GET /inventory/movements` → listar movimientos *(EF Core - Query)*
+### Inventory Movements
+- `POST /inventory/movements` → register inbound/outbound movement *(Dapper - Command)*
+- `GET /inventory/movements` → list movements *(EF Core - Query)*
 
 ---
 
-## Autenticación (OAuth2)
+## Authentication (OAuth2)
 
-Los endpoints se protegen con OAuth2 (Bearer tokens).  
-Para consumir endpoints protegidos:
+Endpoints are protected using OAuth2 (Bearer tokens).
+To consume protected endpoints:
 
-1. Obtén un **access token** desde tu proveedor OAuth2
-2. Llama a la API con header:
+1. Obtain an **access token** from your OAuth2 provider.
+2. Call the API with the following header:
 ```http
 Authorization: Bearer <access_token>
 ```
 
 ### Swagger + OAuth2
-Swagger UI está configurado para autenticar con OAuth2 (botón **Authorize**) si se proveen:
+Swagger UI is configured to authenticate using OAuth2 (via the **Authorize** button) when the following are provided:
 - `SwaggerOAuth__ClientId`
-- (Opcional) `SwaggerOAuth__ClientSecret` (solo si el proveedor lo requiere)
-- `Auth__Authority` y endpoints de autorización/token
+- (Opcional) `SwaggerOAuth__ClientSecret` only if required by the provider)
+- `Auth__Authority` and authorization/token endpoints
 
-> IMPORTANTE: Ajusta URLs de OAuth2 según proveedor (Auth0/Keycloak/Entra ID).
+> IMPORTANT: Adjust OAuth2 URLs according to the provider (Auth0 / Keycloak / Entra ID).
 
 ---
 
-## Pruebas
+## Testing
 
-### Ejecutar todas las pruebas
+### Run all tests
 ```bash
 dotnet test
 ```
 
-### Enfoque TDD
-- **Domain.Tests**: reglas e invariantes (puro dominio).
-- **Application.Tests**: handlers CQRS (mocks de repositorios, etc.).
+### TDD Approach
+- **Domain.Tests**: business rules and invariants.
+- **Application.Tests**: CQRS handlers.
 
 ---
 
-## Decisiones de diseño relevantes
+## Key Design Decisions
 
 - CQRS:
-  - Queries con **EF Core** para lectura (proyecciones/DTOs).
-  - Commands con **Dapper** para escritura (SQL explícito, control de performance).
+  - Queries use **EF Core** for reads (projections/DTOs).
+  - Commands use Dapper for writes (explicit SQL, performance control).
 - No FOREIGN KEYS:
-  - Reglas de negocio en dominio/aplicación para consistencia.
+  - Business rules in the domain/application layers ensure consistency.
 - Clean Code / SOLID:
-  - Handlers con responsabilidad única.
-  - Dependencias invertidas (Application define interfaces, Infrastructure implementa).
+  - Handlers have a single responsibility.
+  - Dependency inversion (Application defines interfaces, Infrastructure implements them).
 
 ---
 
-## Cómo depurar en local (VS Code)
+## Local Debugging (VS Code)
 
-1. Abre el workspace:
+1. Open the workspace:
 ```bash
 code .
 ```
 
-2. Ejecuta la API:
+2. Run the API:
 ```bash
-dotnet run --project ./Redarbor.Api
+dotnet run --project ./src/Redarbor.Api
 ```
 
 
