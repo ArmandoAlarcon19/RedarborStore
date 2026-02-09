@@ -18,4 +18,8 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\RedarborStore.Domain\RedarborStore.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
