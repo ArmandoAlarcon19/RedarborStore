@@ -1,0 +1,32 @@
+# Build output
+**/bin/
+**/obj/
+
+# IDE
+.vscode/
+.idea/
+*.suo
+*.user
+*.code-workspace
+
+# Git
+.git/
+.gitignore
+
+# Docker
+docker-compose*.yml
+.dockerignore
+Dockerfile
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Documentation
+README.md
+docs/

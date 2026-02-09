@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/azure-sql-edge:latest
+    platform: linux/amd64
+    container_name: redarborstore-sqlserver
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: ${DB_SA_PASSWORD}
+    ports:
+      - "${DB_PORT:-1433}:1433"
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P \"$${MSSQL_SA_PASSWORD}\" -Q \"SELECT 1\" || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - redarborstore-network
+  db-init:
+    image: mcr.microsoft.com/azure-sql-edge:latest
+    platform: linux/amd64
+    container_name: redarborstore-db-init
+    volumes:
+      - ./init.sql:/usr/config/init.sql
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    networks:
+      - redarborstore-network
+    entrypoint: >
+      /bin/bash -c "
+      echo 'Esperando 5 segundos adicionales para estabilidad...';
+      sleep 5;
+      /opt/mssql-tools/bin/sqlcmd -S sqlserver -U sa -P '${DB_SA_PASSWORD}' -i /usr/config/init.sql;
+      echo 'Base de datos inicializada correctamente.';"
+  api:
+    build:
+      context: .
+      dockerfile: src/RedarborStore.Api/Dockerfile
+    container_name: redarborstore-api
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ConnectionStrings__DefaultConnection: "Server=sqlserver;Database=RedarborStoreDB;User Id=sa;Password=${DB_SA_PASSWORD};TrustServerCertificate=true;"
+    ports:
+      - "${API_PORT:-5001}:8080"
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - redarborstore-network
+
+volumes:
+  sqlserver-data:
+    driver: local
+
+networks:
+  redarborstore-network:
+    driver: bridge
