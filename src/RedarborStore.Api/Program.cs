@@ -17,7 +17,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Redarbor Store API", Version = "v1" });
-    // Definición de Seguridad para Auth0
     c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
     {
         Type = SecuritySchemeType.OAuth2,
@@ -25,7 +24,6 @@ builder.Services.AddSwaggerGen(c =>
         {
             AuthorizationCode = new OpenApiOAuthFlow
             {
-                // NOTA: Es vital incluir el 'audience' en la URL de autorización
                 AuthorizationUrl = new Uri($"https://{builder.Configuration["Auth0:Domain"]}/authorize?audience={builder.Configuration["Auth0:Audience"]}"),
                 TokenUrl = new Uri($"https://{builder.Configuration["Auth0:Domain"]}/oauth/token"),
                 Scopes = new Dictionary<string, string>
@@ -37,8 +35,6 @@ builder.Services.AddSwaggerGen(c =>
             }
         }
     });
-
-    // Aplicar seguridad globalmente a todos los endpoints
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
@@ -50,25 +46,20 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
-
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();
-
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1");
-        
-        // CONFIGURACIÓN CLAVE PARA AUTH0
         c.OAuthClientId(builder.Configuration["Auth0:ClientId"]);
-        c.OAuthUsePkce(); // Auth0 requiere PKCE para aplicaciones públicas/SPA
+        c.OAuthUsePkce();
     });
 }
-
 app.UseCors("AllowSwagger");
 app.UseHttpsRedirection();
 app.UseAuthentication();

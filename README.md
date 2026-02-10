@@ -7,13 +7,14 @@
 
 ## Technology Stack
 
-- **.NET 10**
+- **.NET 6**
 - **ASP.NET Web API**
 - **EF Core** (read-only)
 - **Dapper** (write-only)
-- **SQL Server** (Docker)
-- **Swagger (Swashbuckle)**
-- **xUnit** (unit testing)
+- **SQL Server** 
+- **Swagger**
+- **xUnit**
+- **Docker**
 
 ---
 
@@ -22,25 +23,23 @@
 The solution is organized by layers following a **Clean Architecture** approach:
 
 - **Redarbor.Domain**
-  - Entities, Value Objects, business rules, domain events.
+  - Entities, Repository Interfaces (CQRS).
 
 - **Redarbor.Application**
   - Use cases (CQRS): `Commands`, `Queries`, `Handlers`, `DTOs`.
-  - Validations.
-  - Interfaces.
 
 - **Redarbor.Infrastructure**
   - Persistence:
     - **EF Core** for queries.
-    - **Dapper** for commands..
+    - **Dapper** for commands.
   - Data access configuration.
 
 - **Redarbor.Api**
-  - Minimal API endpoints, DI, middleware, authentication, Swagger.
+  - API endpoints, Dockerfile, OAuth2, Swagger.
 
-- **Tests**
-  - `Redarbor.Domain.Tests`: domain unit tests.
-  - `Redarbor.Application.Tests`: unit tests for handlers/use cases.
+- **Tests (TDD)**
+  - `Redarbor.Domain.Tests`: Domain unit tests.
+  - `Redarbor.Application.Tests`: Unit tests for handlers/use cases.
 
 ---
 
@@ -56,19 +55,9 @@ dotnet --version
 docker --version
 docker compose version
 ```
-
 ## Environment Variables Configuration
 
 This project uses configuration via `appsettings.json` and environment variables.
-
-Typical variables:
-- `ConnectionStrings__SqlServer` → SQL Server connection string
-- OAuth2 configuration (depends on the provider):
-  - `Auth__Authority`
-  - `Auth__Audience`
-  - `SwaggerOAuth__ClientId`
-
-> Note: The exact OAuth2 configuration depends on the provider (Auth0, Keycloak, Azure Entra ID, etc.). See the **OAuth2** section.
 
 ---
 
@@ -81,17 +70,21 @@ docker compose up -d --build
 
 Services:
 - `db`: SQL Server
-- `data init`: Load principal data
+- `db_init`: Create structure and load principal data
 - `api`: RedarborStore API
 
 Swagger:
 - `http://localhost:5001/swagger`
 
+### Check status
+```bash
+docker compose ps
+```
+
 ### Stop
 ```bash
 docker compose down -v
 ```
-
 ---
 
 ## Database
@@ -100,7 +93,7 @@ docker compose down -v
 Includes at least:
 - **Products**
 - **Categories**
-- **Inventory Movements (inbound/outbound)**
+- **Inventory Movements (Entry/Exit)**
 
 > Important: **FOREIGN KEYS are not used** by requirement.  
 
@@ -133,21 +126,12 @@ SQL script located at `./init.sql` executed when the container starts
 ## Authentication (OAuth2)
 
 Endpoints are protected using OAuth2 (Bearer tokens).
-To consume protected endpoints:
-
-1. Obtain an **access token** from your OAuth2 provider.
-2. Call the API with the following header:
-```http
-Authorization: Bearer <access_token>
-```
 
 ### Swagger + OAuth2
 Swagger UI is configured to authenticate using OAuth2 (via the **Authorize** button) when the following are provided:
-- `SwaggerOAuth__ClientId`
-- (Opcional) `SwaggerOAuth__ClientSecret` only if required by the provider)
-- `Auth__Authority` and authorization/token endpoints
-
-> IMPORTANT: Adjust OAuth2 URLs according to the provider (Auth0 / Keycloak / Entra ID).
+- `Domain`
+- `Audience`
+- `ClientId`
 
 ---
 
@@ -159,21 +143,8 @@ dotnet test
 ```
 
 ### TDD Approach
-- **Domain.Tests**: business rules and invariants.
+- **Domain.Tests**: Entities rules.
 - **Application.Tests**: CQRS handlers.
-
----
-
-## Key Design Decisions
-
-- CQRS:
-  - Queries use **EF Core** for reads (projections/DTOs).
-  - Commands use Dapper for writes (explicit SQL, performance control).
-- No FOREIGN KEYS:
-  - Business rules in the domain/application layers ensure consistency.
-- Clean Code / SOLID:
-  - Handlers have a single responsibility.
-  - Dependency inversion (Application defines interfaces, Infrastructure implements them).
 
 ---
 
