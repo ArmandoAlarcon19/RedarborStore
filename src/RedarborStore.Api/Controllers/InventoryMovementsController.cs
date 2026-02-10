@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RedarborStore.Application.Features.InventoryMovements.Commands.CreateInventoryMovement;
 using RedarborStore.Application.Features.InventoryMovements.Queries.GetAllInventoryMovements;
@@ -8,6 +9,7 @@ namespace RedarborStore.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class InventoryMovementsController : ControllerBase
 {
     private readonly IMediator _mediator;

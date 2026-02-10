@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RedarborStore.Application.Features.Products.Commands.CreateProduct;
 using RedarborStore.Application.Features.Products.Commands.DeleteProduct;
@@ -11,6 +12,7 @@ namespace RedarborStore.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class ProductsController : ControllerBase
 {
     private readonly IMediator _mediator;
