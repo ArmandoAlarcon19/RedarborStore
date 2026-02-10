@@ -27,12 +27,12 @@ public static class ProductFixture
 
     public static List<Product> CreateProductList()
     {
-        return
-        [
+        return new List<Product>
+        {
             CreateProduct(1, "Laptop", "Gaming laptop", 1299.99m, 50, 1),
             CreateProduct(2, "T-Shirt", "Cotton t-shirt", 19.99m, 200, 2),
             CreateProduct(3, "Coffee Beans", "Premium arabica", 24.50m, 100, 3),
-        ];
+        };
     }
 
     public static List<Product> CreateProductListByCategory(int categoryId)
@@ -42,5 +42,5 @@ public static class ProductFixture
             .ToList();
     }
 
-    public static List<Product> CreateEmptyList() => [];
+    public static List<Product> CreateEmptyList() => new List<Product>();
 }

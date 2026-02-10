@@ -1,12 +1,8 @@
-using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using RedarborStore.Domain.Interfaces.Commands;
 using RedarborStore.Domain.Interfaces.Queries;
-using RedarborStore.Infrastructure.Auth;
 using RedarborStore.Infrastructure.Commands;
 using RedarborStore.Infrastructure.Data;
 using RedarborStore.Infrastructure.Queries;

@@ -25,28 +25,22 @@ public class CreateInventoryMovementCommandHandler
     public async Task<int> Handle(
         CreateInventoryMovementCommand request, CancellationToken cancellationToken)
     {
-        // Validate product exists (Query → EF Core)
         var product = await _productQueryRepository.GetByIdAsync(request.ProductId);
         if (product == null)
             throw new Exception($"Product with ID {request.ProductId} not found");
 
-        // Validate movement type
         if (request.MovementType != "Entry" && request.MovementType != "Exit")
             throw new Exception("Movement type must be 'Entry' or 'Exit'");
 
-        // Validate sufficient stock for exits
         if (request.MovementType == "Exit" && product.Stock < request.Quantity)
             throw new Exception($"Insufficient stock. Current stock: {product.Stock}");
 
-        // Calculate new stock
         var newStock = request.MovementType == "Entry"
             ? product.Stock + request.Quantity
             : product.Stock - request.Quantity;
 
-        // Update product stock (Command → Dapper)
         await _productCommandRepository.UpdateStockAsync(product.Id, newStock);
 
-        // Create movement record (Command → Dapper)
         var movement = new InventoryMovement
         {
             ProductId = request.ProductId,

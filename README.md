@@ -8,7 +8,7 @@
 ## Technology Stack
 
 - **.NET 10**
-- **ASP.NET Core Web API** (Minimal API)
+- **ASP.NET Web API**
 - **EF Core** (read-only)
 - **Dapper** (write-only)
 - **SQL Server** (Docker)

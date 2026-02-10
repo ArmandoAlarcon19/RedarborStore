@@ -21,13 +21,13 @@ public static class CategoryFixture
 
     public static List<Category> CreateCategoryList()
     {
-        return
-        [
+        return new List<Category>
+        {
             CreateCategory(1, "Electronics", "Electronic devices"),
             CreateCategory(2, "Clothing", "Apparel and fashion"),
             CreateCategory(3, "Food & Beverages", "Consumable products"),
-        ];
+        };
     }
 
-    public static List<Category> CreateEmptyList() => [];
+    public static List<Category> CreateEmptyList() => new List<Category>();
 }

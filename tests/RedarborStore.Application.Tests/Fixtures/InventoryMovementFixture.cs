@@ -24,13 +24,13 @@ public static class InventoryMovementFixture
 
     public static List<InventoryMovement> CreateMovementList()
     {
-        return
-        [
+        return new List<InventoryMovement>
+        {
             CreateMovement(1, 1, "Entry", 100, "Initial stock"),
             CreateMovement(2, 1, "Exit", 20, "Customer order #1001"),
             CreateMovement(3, 1, "Entry", 50, "Restock from supplier"),
             CreateMovement(4, 2, "Entry", 200, "New product arrival"),
-        ];
+        };
     }
 
     public static List<InventoryMovement> CreateMovementListByProduct(int productId)
@@ -40,5 +40,5 @@ public static class InventoryMovementFixture
             .ToList();
     }
 
-    public static List<InventoryMovement> CreateEmptyList() => [];
+    public static List<InventoryMovement> CreateEmptyList() => new List<InventoryMovement>();
 }

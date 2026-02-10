@@ -34,7 +34,7 @@ public class CreateInventoryMovementCommandHandlerTests
             .GetByIdAsync(1)
             .Returns(product);
         _productCommandRepository
-            .UpdateStockAsync(1, 150)  // 100 + 50
+            .UpdateStockAsync(1, 150)
             .Returns(true);
         _movementCommandRepository
             .CreateAsync(Arg.Any<InventoryMovement>())
@@ -74,7 +74,7 @@ public class CreateInventoryMovementCommandHandlerTests
     {
         var product = ProductFixture.CreateProduct(id: 1, stock: 100);
         _productQueryRepository.GetByIdAsync(1).Returns(product);
-        _productCommandRepository.UpdateStockAsync(1, 70).Returns(true); // 100 - 30
+        _productCommandRepository.UpdateStockAsync(1, 70).Returns(true);
         _movementCommandRepository.CreateAsync(Arg.Any<InventoryMovement>()).Returns(2);
         var command = new CreateInventoryMovementCommand
         {
@@ -93,7 +93,7 @@ public class CreateInventoryMovementCommandHandlerTests
     {
         var product = ProductFixture.CreateProduct(id: 1, stock: 50);
         _productQueryRepository.GetByIdAsync(1).Returns(product);
-        _productCommandRepository.UpdateStockAsync(1, 0).Returns(true); // 50 - 50
+        _productCommandRepository.UpdateStockAsync(1, 0).Returns(true);
         _movementCommandRepository.CreateAsync(Arg.Any<InventoryMovement>()).Returns(3);
         var command = new CreateInventoryMovementCommand
         {
@@ -152,7 +152,7 @@ public class CreateInventoryMovementCommandHandlerTests
         {
             ProductId = 1,
             MovementType = "Exit",
-            Quantity = 50,  // More than stock (10)
+            Quantity = 50,
             Reason = "Large order"
         };
         var act = async () => await _handler.Handle(command, CancellationToken.None);

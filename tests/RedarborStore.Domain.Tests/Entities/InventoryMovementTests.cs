@@ -39,12 +39,9 @@ public class InventoryMovementTests
     [Fact]
     public void InventoryMovement_AsEntry_ShouldHaveEntryType()
     {
-        // Arrange & Act
         var movement = new InventoryMovementBuilder()
             .AsEntry()
             .Build();
-
-        // Assert
         movement.MovementType.Should().Be("Entry");
     }
 
@@ -189,10 +186,10 @@ public class InventoryMovementTests
             .Build();
         var movements = new List<InventoryMovement>
         {
-            new InventoryMovementBuilder().AsEntry().WithQuantity(50).Build(),   // +50 = 150
-            new InventoryMovementBuilder().AsExit().WithQuantity(30).Build(),    // -30 = 120
-            new InventoryMovementBuilder().AsEntry().WithQuantity(20).Build(),   // +20 = 140
-            new InventoryMovementBuilder().AsExit().WithQuantity(10).Build(),    // -10 = 130
+            new InventoryMovementBuilder().AsEntry().WithQuantity(50).Build(), 
+            new InventoryMovementBuilder().AsExit().WithQuantity(30).Build(),
+            new InventoryMovementBuilder().AsEntry().WithQuantity(20).Build(),
+            new InventoryMovementBuilder().AsExit().WithQuantity(10).Build(),   
         };
         foreach (var movement in movements)
         {
