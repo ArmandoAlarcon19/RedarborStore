@@ -2,6 +2,7 @@ using FluentAssertions;
 using NSubstitute;
 using RedarborStore.Application.Features.InventoryMovements.Queries.GetAllInventoryMovements;
 using RedarborStore.Application.Tests.Fixtures;
+using RedarborStore.Domain.Enums;
 using RedarborStore.Domain.Interfaces.Queries;
 
 namespace RedarborStore.Application.Tests.Features.InventoryMovements.Queries;
@@ -38,7 +39,7 @@ public class GetAllInventoryMovementsQueryHandlerTests
         var firstMovement = result[0];
         firstMovement.Id.Should().Be(1);
         firstMovement.ProductId.Should().Be(1);
-        firstMovement.MovementType.Should().Be("Entry");
+        firstMovement.MovementType.Should().Be(MovementType.Entry);
         firstMovement.Quantity.Should().Be(100);
         firstMovement.Reason.Should().Be("Initial stock");
     }

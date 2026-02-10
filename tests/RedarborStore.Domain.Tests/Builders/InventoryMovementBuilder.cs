@@ -1,4 +1,5 @@
 using RedarborStore.Domain.Entities;
+using RedarborStore.Domain.Enums;
 
 namespace RedarborStore.Domain.Tests.Builders;
 
@@ -6,7 +7,7 @@ public class InventoryMovementBuilder
 {
     private int _id = 1;
     private int _productId = 1;
-    private string _movementType = "Entry";
+    private MovementType _movementType = MovementType.Entry;
     private int _quantity = 50;
     private string? _reason = "Test movement";
     private DateTime _movementDate = new(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc);
@@ -25,17 +26,17 @@ public class InventoryMovementBuilder
 
     public InventoryMovementBuilder AsEntry()
     {
-        _movementType = "Entry";
+        _movementType = MovementType.Entry;
         return this;
     }
 
     public InventoryMovementBuilder AsExit()
     {
-        _movementType = "Exit";
+        _movementType = MovementType.Exit;
         return this;
     }
 
-    public InventoryMovementBuilder WithMovementType(string type)
+    public InventoryMovementBuilder WithMovementType(MovementType type)
     {
         _movementType = type;
         return this;

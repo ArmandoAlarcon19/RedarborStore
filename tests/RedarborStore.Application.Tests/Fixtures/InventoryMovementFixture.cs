@@ -1,4 +1,5 @@
 using RedarborStore.Domain.Entities;
+using RedarborStore.Domain.Enums;
 
 namespace RedarborStore.Application.Tests.Fixtures;
 
@@ -7,7 +8,7 @@ public static class InventoryMovementFixture
     public static InventoryMovement CreateMovement(
         int id = 1,
         int productId = 1,
-        string movementType = "Entry",
+        MovementType movementType = MovementType.Entry,
         int quantity = 50,
         string? reason = "Stock replenishment")
     {
@@ -26,10 +27,10 @@ public static class InventoryMovementFixture
     {
         return new List<InventoryMovement>
         {
-            CreateMovement(1, 1, "Entry", 100, "Initial stock"),
-            CreateMovement(2, 1, "Exit", 20, "Customer order #1001"),
-            CreateMovement(3, 1, "Entry", 50, "Restock from supplier"),
-            CreateMovement(4, 2, "Entry", 200, "New product arrival"),
+            CreateMovement(1, 1, MovementType.Entry, 100, "Initial stock"),
+            CreateMovement(2, 1, MovementType.Exit, 20, "Customer order #1001"),
+            CreateMovement(3, 1, MovementType.Entry, 50, "Restock from supplier"),
+            CreateMovement(4, 2, MovementType.Entry, 200, "New product arrival"),
         };
     }
 

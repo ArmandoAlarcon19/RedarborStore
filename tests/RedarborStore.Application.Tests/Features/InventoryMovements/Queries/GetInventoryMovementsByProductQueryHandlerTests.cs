@@ -2,6 +2,7 @@ using FluentAssertions;
 using NSubstitute;
 using RedarborStore.Application.Features.InventoryMovements.Queries.GetInventoryMovementsByProduct;
 using RedarborStore.Application.Tests.Fixtures;
+using RedarborStore.Domain.Enums;
 using RedarborStore.Domain.Interfaces.Queries;
 
 namespace RedarborStore.Application.Tests.Features.InventoryMovements.Queries;
@@ -58,7 +59,7 @@ public class GetInventoryMovementsByProductQueryHandlerTests
         var movement = InventoryMovementFixture.CreateMovement(
             id: 10,
             productId: 3,
-            movementType: "Exit",
+            movementType: MovementType.Exit,
             quantity: 25,
             reason: "Damaged goods");
         _queryRepository
@@ -69,7 +70,7 @@ public class GetInventoryMovementsByProductQueryHandlerTests
         result.Should().HaveCount(1);
         result[0].Id.Should().Be(10);
         result[0].ProductId.Should().Be(3);
-        result[0].MovementType.Should().Be("Exit");
+        result[0].MovementType.Should().Be(MovementType.Exit);
         result[0].Quantity.Should().Be(25);
         result[0].Reason.Should().Be("Damaged goods");
     }

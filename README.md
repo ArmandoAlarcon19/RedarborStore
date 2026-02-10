@@ -23,7 +23,7 @@
 The solution is organized by layers following a **Clean Architecture** approach:
 
 - **Redarbor.Domain**
-  - Entities, Repository Interfaces (CQRS).
+  - Entities, Enums, Repository Interfaces (CQRS).
 
 - **Redarbor.Application**
   - Use cases (CQRS): `Commands`, `Queries`, `Handlers`, `DTOs`.
@@ -103,7 +103,7 @@ SQL script located at `./init.sql` executed when the container starts
 ---
 
 ## Endpoints
-### Productos
+### Products
 - `GET /Products` → list products *(EF Core - Query)*
 - `GET /Products/{id}` → get product by id *(EF Core - Query)*
 - `POST /Products` → create product *(Dapper - Command)*

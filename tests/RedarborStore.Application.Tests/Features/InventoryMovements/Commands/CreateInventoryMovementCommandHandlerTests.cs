@@ -3,6 +3,7 @@ using NSubstitute;
 using RedarborStore.Application.Features.InventoryMovements.Commands.CreateInventoryMovement;
 using RedarborStore.Application.Tests.Fixtures;
 using RedarborStore.Domain.Entities;
+using RedarborStore.Domain.Enums;
 using RedarborStore.Domain.Interfaces.Commands;
 using RedarborStore.Domain.Interfaces.Queries;
 
@@ -42,7 +43,7 @@ public class CreateInventoryMovementCommandHandlerTests
         var command = new CreateInventoryMovementCommand
         {
             ProductId = 1,
-            MovementType = "Entry",
+            MovementType = MovementType.Entry,
             Quantity = 50,
             Reason = "Restock"
         };
@@ -61,7 +62,7 @@ public class CreateInventoryMovementCommandHandlerTests
         var command = new CreateInventoryMovementCommand
         {
             ProductId = 1,
-            MovementType = "Entry",
+            MovementType = MovementType.Entry,
             Quantity = 100,
             Reason = "Large shipment"
         };
@@ -79,7 +80,7 @@ public class CreateInventoryMovementCommandHandlerTests
         var command = new CreateInventoryMovementCommand
         {
             ProductId = 1,
-            MovementType = "Exit",
+            MovementType = MovementType.Exit,
             Quantity = 30,
             Reason = "Customer order"
         };
@@ -98,7 +99,7 @@ public class CreateInventoryMovementCommandHandlerTests
         var command = new CreateInventoryMovementCommand
         {
             ProductId = 1,
-            MovementType = "Exit",
+            MovementType = MovementType.Exit,
             Quantity = 50,
             Reason = "Full inventory clearance"
         };
@@ -115,7 +116,7 @@ public class CreateInventoryMovementCommandHandlerTests
         var command = new CreateInventoryMovementCommand
         {
             ProductId = 999,
-            MovementType = "Entry",
+            MovementType = MovementType.Entry,
             Quantity = 10,
             Reason = "Test"
         };
@@ -126,24 +127,6 @@ public class CreateInventoryMovementCommandHandlerTests
     }
 
     [Fact]
-    public async Task Handle_WithInvalidMovementType_ShouldThrowException()
-    {
-        var product = ProductFixture.CreateProduct(id: 1, stock: 100);
-        _productQueryRepository.GetByIdAsync(1).Returns(product);
-        var command = new CreateInventoryMovementCommand
-        {
-            ProductId = 1,
-            MovementType = "InvalidType",
-            Quantity = 10,
-            Reason = "Test"
-        };
-        var act = async () => await _handler.Handle(command, CancellationToken.None);
-        await act.Should()
-            .ThrowAsync<Exception>()
-            .WithMessage("*Entry*Exit*");
-    }
-
-    [Fact]
     public async Task Handle_ExitWithInsufficientStock_ShouldThrowException()
     {
         var product = ProductFixture.CreateProduct(id: 1, stock: 10);
@@ -151,7 +134,7 @@ public class CreateInventoryMovementCommandHandlerTests
         var command = new CreateInventoryMovementCommand
         {
             ProductId = 1,
-            MovementType = "Exit",
+            MovementType = MovementType.Exit,
             Quantity = 50,
             Reason = "Large order"
         };
@@ -170,24 +153,7 @@ public class CreateInventoryMovementCommandHandlerTests
         var command = new CreateInventoryMovementCommand
         {
             ProductId = 999,
-            MovementType = "Entry",
-            Quantity = 10
-        };
-        try { await _handler.Handle(command, CancellationToken.None); }
-        catch { /* Expected */ }
-        await _productCommandRepository.DidNotReceive().UpdateStockAsync(Arg.Any<int>(), Arg.Any<int>());
-        await _movementCommandRepository.DidNotReceive().CreateAsync(Arg.Any<InventoryMovement>());
-    }
-
-    [Fact]
-    public async Task Handle_WhenInvalidType_ShouldNotCallAnyCommandRepository()
-    {
-        var product = ProductFixture.CreateProduct(id: 1, stock: 100);
-        _productQueryRepository.GetByIdAsync(1).Returns(product);
-        var command = new CreateInventoryMovementCommand
-        {
-            ProductId = 1,
-            MovementType = "BadType",
+            MovementType = MovementType.Entry,
             Quantity = 10
         };
         try { await _handler.Handle(command, CancellationToken.None); }
@@ -207,7 +173,7 @@ public class CreateInventoryMovementCommandHandlerTests
         var command = new CreateInventoryMovementCommand
         {
             ProductId = 1,
-            MovementType = "Entry",
+            MovementType = MovementType.Entry,
             Quantity = 25,
             Reason = "Weekly restock"
         };
@@ -216,7 +182,7 @@ public class CreateInventoryMovementCommandHandlerTests
             .Received(1)
             .CreateAsync(Arg.Is<InventoryMovement>(m =>
                 m.ProductId == 1 &&
-                m.MovementType == "Entry" &&
+                m.MovementType == MovementType.Entry &&
                 m.Quantity == 25 &&
                 m.Reason == "Weekly restock"));
     }

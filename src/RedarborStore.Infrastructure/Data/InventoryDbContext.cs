@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using RedarborStore.Domain.Entities;
+using RedarborStore.Domain.Enums;
 
 namespace RedarborStore.Infrastructure.Data;
 
@@ -68,6 +69,10 @@ public class InventoryDbContext : DbContext
                 .IsRequired();
 
             entity.Property(e => e.MovementType)
+                .HasConversion(
+                    v => v == MovementType.None ? "" : v.ToString(),
+                    v => string.IsNullOrEmpty(v)  ? MovementType.None : (MovementType)Enum.Parse(typeof(MovementType), v) 
+                )
                 .IsRequired()
                 .HasMaxLength(20);
 

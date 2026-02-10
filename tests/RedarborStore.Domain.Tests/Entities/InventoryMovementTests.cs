@@ -1,5 +1,6 @@
 using FluentAssertions;
 using RedarborStore.Domain.Entities;
+using RedarborStore.Domain.Enums;
 using RedarborStore.Domain.Tests.Builders;
 
 namespace RedarborStore.Domain.Tests.Entities;
@@ -13,7 +14,7 @@ public class InventoryMovementTests
         var movement = new InventoryMovement();
         movement.Id.Should().Be(0);
         movement.ProductId.Should().Be(0);
-        movement.MovementType.Should().BeEmpty();
+        movement.MovementType.Should().Be(MovementType.None);
         movement.Quantity.Should().Be(0);
         movement.Reason.Should().BeNull();
         movement.MovementDate.Should().BeCloseTo(DateTime.Now, TimeSpan.FromSeconds(5));
@@ -31,7 +32,7 @@ public class InventoryMovementTests
             .Build();
         movement.Id.Should().Be(1);
         movement.ProductId.Should().Be(5);
-        movement.MovementType.Should().Be("Entry");
+        movement.MovementType.Should().Be(Enums.MovementType.Entry);
         movement.Quantity.Should().Be(100);
         movement.Reason.Should().Be("Initial stock");
     }
@@ -42,7 +43,7 @@ public class InventoryMovementTests
         var movement = new InventoryMovementBuilder()
             .AsEntry()
             .Build();
-        movement.MovementType.Should().Be("Entry");
+        movement.MovementType.Should().Be(Enums.MovementType.Entry);
     }
 
     [Fact]
@@ -51,28 +52,15 @@ public class InventoryMovementTests
         var movement = new InventoryMovementBuilder()
             .AsExit()
             .Build();
-        movement.MovementType.Should().Be("Exit");
+        movement.MovementType.Should().Be(Enums.MovementType.Exit);
     }
 
     [Theory]
-    [InlineData("Entry")]
-    [InlineData("Exit")]
-    public void InventoryMovement_MovementType_ShouldAcceptValidTypes(string type)
+    [InlineData(MovementType.Entry)]
+    [InlineData(MovementType.Exit)]
+    public void InventoryMovement_MovementType_ShouldAcceptValidTypes(MovementType type)
     {
         var movement = new InventoryMovementBuilder()
-            .WithMovementType(type)
-            .Build();
-        movement.MovementType.Should().Be(type);
-    }
-
-    [Theory]
-    [InlineData("Invalid")]
-    [InlineData("")]
-    [InlineData("entry")]
-    [InlineData("EXIT")]
-    public void InventoryMovement_MovementType_EntityAllowsAnyString(string type)
-    {
-         var movement = new InventoryMovementBuilder()
             .WithMovementType(type)
             .Build();
         movement.MovementType.Should().Be(type);
@@ -138,7 +126,7 @@ public class InventoryMovementTests
             .WithQuantity(50)
             .WithProductId(product.Id)
             .Build();
-        if (movement.MovementType == "Entry")
+        if (movement.MovementType == MovementType.Entry)
         {
             product.Stock += movement.Quantity;
         }
@@ -157,7 +145,7 @@ public class InventoryMovementTests
             .WithQuantity(30)
             .WithProductId(product.Id)
             .Build();
-        if (movement.MovementType == "Exit")
+        if (movement.MovementType == MovementType.Exit)
         {
             product.Stock -= movement.Quantity;
         }
@@ -193,7 +181,7 @@ public class InventoryMovementTests
         };
         foreach (var movement in movements)
         {
-            if (movement.MovementType == "Entry")
+            if (movement.MovementType == MovementType.Entry)
                 product.Stock += movement.Quantity;
             else
                 product.Stock -= movement.Quantity;
