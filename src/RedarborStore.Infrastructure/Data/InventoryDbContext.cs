@@ -8,9 +8,9 @@ public class InventoryDbContext : DbContext
     public InventoryDbContext(DbContextOptions<InventoryDbContext> options)
         : base(options) { }
 
-    public DbSet<Category> Categories { get; set; }
-    public DbSet<Product> Products { get; set; }
-    public DbSet<InventoryMovement> InventoryMovements { get; set; }
+    public DbSet<Category> Categories { get; set; } = null!;
+    public DbSet<Product> Products { get; set; } = null!;
+    public DbSet<InventoryMovement> InventoryMovements { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
