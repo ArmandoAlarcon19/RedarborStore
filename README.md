@@ -90,7 +90,7 @@ docker compose down -v
 ## Database
 
 ### Eschema
-Includes at least:
+Includes:
 - **Products**
 - **Categories**
 - **Inventory Movements (Entry/Exit)**
@@ -104,22 +104,24 @@ SQL script located at `./init.sql` executed when the container starts
 
 ## Endpoints
 ### Productos
-- `GET /products` → list products *(EF Core - Query)*
-- `GET /products/{id}` → get product by id *(EF Core - Query)*
-- `POST /products` → create product *(Dapper - Command)*
-- `PUT /products/{id}` → update product *(Dapper - Command)*
-- `DELETE /products/{id}` → delete product *(Dapper - Command)*
+- `GET /Products` → list products *(EF Core - Query)*
+- `GET /Products/{id}` → get product by id *(EF Core - Query)*
+- `POST /Products` → create product *(Dapper - Command)*
+- `PUT /Products/{id}` → update product *(Dapper - Command)*
+- `DELETE /Products/{id}` → delete product *(Dapper - Command)*
+- `GET /Products/category/{categoryId}` → get products by categoryId *(EF Core - Query)*
 
 ### Categories
-- `GET /categories` → list categories *(EF Core - Query)*
-- `GET /categories/{id}` → get category by id  *(EF Core - Query)*
-- `POST /categories` → create category *(Dapper - Command)*
-- `PUT /categories/{id}` → update category *(Dapper - Command)*
-- `DELETE /categories/{id}` → delete category *(Dapper - Command)*
+- `GET /Categories` → list categories *(EF Core - Query)*
+- `GET /Categories/{id}` → get category by id  *(EF Core - Query)*
+- `POST /Categories` → create category *(Dapper - Command)*
+- `PUT /Categories/{id}` → update category *(Dapper - Command)*
+- `DELETE /Categories/{id}` → delete category *(Dapper - Command)*
 
 ### Inventory Movements
-- `POST /inventory/movements` → register inbound/outbound movement *(Dapper - Command)*
-- `GET /inventory/movements` → list movements *(EF Core - Query)*
+- `POST /InventoryMovements` → register Entry/Exit movement *(Dapper - Command)*
+- `GET /InventoryMovements` → list movements *(EF Core - Query)*
+- `GET /InventoryMovements/product/{productId}` → list movements by productId *(EF Core - Query)*
 
 ---
 
