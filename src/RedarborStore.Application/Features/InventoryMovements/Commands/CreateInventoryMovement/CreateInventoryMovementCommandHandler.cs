@@ -1,6 +1,7 @@
 using MediatR;
 using RedarborStore.Domain.Entities;
 using RedarborStore.Domain.Enums;
+using RedarborStore.Domain.Exceptions;
 using RedarborStore.Domain.Interfaces.Commands;
 using RedarborStore.Domain.Interfaces.Queries;
 
@@ -28,13 +29,13 @@ public class CreateInventoryMovementCommandHandler
     {
         var product = await _productQueryRepository.GetByIdAsync(request.ProductId);
         if (product == null)
-            throw new Exception($"Product with ID {request.ProductId} not found");
+            throw new NotFoundException(nameof(product),request.ProductId);
 
         if (request.MovementType != MovementType.Entry && request.MovementType != MovementType.Exit)
-            throw new Exception("Movement type must be 'Entry' or 'Exit'");
+            throw new InvalidMovementTypeException("Movement type must be 'Entry' or 'Exit'");
 
         if (request.MovementType == MovementType.Exit && product.Stock < request.Quantity)
-            throw new Exception($"Insufficient stock. Current stock: {product.Stock}");
+            throw new InsufficientStockException(product.Id,product.Stock, request.Quantity);
 
         var newStock = request.MovementType == MovementType.Entry
             ? product.Stock + request.Quantity

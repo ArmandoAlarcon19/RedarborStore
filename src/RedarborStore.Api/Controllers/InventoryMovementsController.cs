@@ -37,14 +37,8 @@ public class InventoryMovementsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateInventoryMovementCommand command)
     {
-        try
-        {
-            var id = await _mediator.Send(command);
-            return Ok(new { Id = id, Message = "Movement registered successfully" });
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(new { Error = ex.Message });
-        }
+        var id = await _mediator.Send(command);
+        return Ok(new { Id = id, Message = "Movement registered successfully" });
+       
     }
 }

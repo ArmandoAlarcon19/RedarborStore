@@ -33,7 +33,6 @@ public class ProductsController : ControllerBase
     public async Task<IActionResult> GetById(int id)
     {
         var result = await _mediator.Send(new GetProductByIdQuery { Id = id });
-        if (result == null) return NotFound("Product not found");
         return Ok(result);
     }
 
@@ -56,7 +55,6 @@ public class ProductsController : ControllerBase
     {
         command.Id = id;
         var result = await _mediator.Send(command);
-        if (!result) return NotFound("Product not found");
         return NoContent();
     }
 
@@ -64,7 +62,6 @@ public class ProductsController : ControllerBase
     public async Task<IActionResult> Delete(int id)
     {
         var result = await _mediator.Send(new DeleteProductCommand { Id = id });
-        if (!result) return NotFound("Product not found");
         return NoContent();
     }
 }

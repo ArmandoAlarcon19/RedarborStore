@@ -32,7 +32,6 @@ public class CategoriesController : ControllerBase
     public async Task<IActionResult> GetById(int id)
     {
         var result = await _mediator.Send(new GetCategoryByIdQuery { Id = id });
-        if (result == null) return NotFound("Category not found");
         return Ok(result);
     }
 
@@ -48,7 +47,6 @@ public class CategoriesController : ControllerBase
     {
         command.Id = id;
         var result = await _mediator.Send(command);
-        if (!result) return NotFound("Category not found");
         return NoContent();
     }
 
@@ -56,7 +54,6 @@ public class CategoriesController : ControllerBase
     public async Task<IActionResult> Delete(int id)
     {
         var result = await _mediator.Send(new DeleteCategoryCommand { Id = id });
-        if (!result) return NotFound("Category not found");
         return NoContent();
     }
 }

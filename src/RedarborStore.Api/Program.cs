@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
+using RedarborStore.Api.Middleware;
 using RedarborStore.Application.Features.Categories.Commands.CreateCategory;
 using RedarborStore.Infrastructure.DependencyInjection;
 
@@ -55,6 +56,7 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

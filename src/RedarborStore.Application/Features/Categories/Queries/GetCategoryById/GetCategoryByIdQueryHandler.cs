@@ -1,5 +1,6 @@
 using Application.DTOs.Responses;
 using MediatR;
+using RedarborStore.Domain.Exceptions;
 using RedarborStore.Domain.Interfaces.Queries;
 
 namespace RedarborStore.Application.Features.Categories.Queries.GetCategoryById;
@@ -18,7 +19,7 @@ public class GetCategoryByIdQueryHandler
         GetCategoryByIdQuery request, CancellationToken cancellationToken)
     {
         var category = await _queryRepository.GetByIdAsync(request.Id);
-        if (category == null) return null;
+        if (category is null) throw new NotFoundException(nameof(category),request.Id);
 
         return new CategoryResponseDto
         {
