@@ -10,7 +10,7 @@ using RedarborStore.Application.Features.Categories.Queries.GetCategoryById;
 namespace RedarborStore.Api.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/v{version:apiVersion}/[controller]")]
 [Authorize]
 public class CategoriesController : ControllerBase
 {

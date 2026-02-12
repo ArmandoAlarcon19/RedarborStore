@@ -25,8 +25,6 @@ public static class ServiceCollectionExtensions
                         maxRetryDelay: TimeSpan.FromSeconds(10),
                         errorNumbersToAdd: null);
                 }));
-
-      
         services.AddScoped<ICategoryQueryRepository, CategoryQueryRepository>();
         services.AddScoped<IProductQueryRepository, ProductQueryRepository>();
         services.AddScoped<IInventoryMovementQueryRepository, InventoryMovementQueryRepository>();

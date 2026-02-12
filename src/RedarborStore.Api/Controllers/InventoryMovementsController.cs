@@ -8,7 +8,7 @@ using RedarborStore.Application.Features.InventoryMovements.Queries.GetInventory
 namespace RedarborStore.Api.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/v{version:apiVersion}/[controller]")]
 [Authorize]
 public class InventoryMovementsController : ControllerBase
 {

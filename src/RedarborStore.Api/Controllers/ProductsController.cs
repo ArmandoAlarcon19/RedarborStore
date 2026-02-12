@@ -11,7 +11,7 @@ using RedarborStore.Application.Features.Products.Queries.GetProductsByCategory;
 namespace RedarborStore.Api.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/v{version:apiVersion}/[controller]")]
 [Authorize]
 public class ProductsController : ControllerBase
 {
