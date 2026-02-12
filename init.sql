@@ -13,7 +13,9 @@ BEGIN
         Id INT PRIMARY KEY IDENTITY(1,1),
         Name NVARCHAR(100) NOT NULL,
         Description NVARCHAR(500),
-        CreatedDate DATETIME DEFAULT GETDATE()
+        CreatedDate DATETIME DEFAULT GETDATE(),
+        IsDeleted BIT DEFAULT 0,
+        DeletedDate DATETIME NULL
     );
 END
 GO
@@ -28,7 +30,9 @@ BEGIN
         Price DECIMAL(18, 2) NOT NULL DEFAULT 0.00,
         Stock INT NOT NULL DEFAULT 0,
         CreatedDate DATETIME DEFAULT GETDATE(),
-        UpdatedDate DATETIME DEFAULT GETDATE()
+        UpdatedDate DATETIME DEFAULT GETDATE(),
+        IsDeleted BIT DEFAULT 0,
+        DeletedDate DATETIME NULL
     );
 END
 GO

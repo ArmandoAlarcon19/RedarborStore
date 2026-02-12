@@ -46,7 +46,7 @@ public class ProductCommandRepository : IProductCommandRepository
                 Price       = @Price,
                 CategoryId  = @CategoryId,
                 UpdatedDate   = GETDATE()
-            WHERE Id = @Id;";
+            WHERE Id = @Id AND IsDeleted = 0;";
         using var connection = CreateConnection();
         var rowsAffected = await connection.ExecuteAsync(sql, new
         {
@@ -63,7 +63,8 @@ public class ProductCommandRepository : IProductCommandRepository
     public async Task<bool> DeleteAsync(int id)
     {
         const string sql = @"
-            DELETE FROM Products
+            UPDATE Products
+            SET IsDeleted = 1, DeletedDate = GETDATE()
             WHERE Id = @Id;";
         using var connection = CreateConnection();
         var rowsAffected = await connection.ExecuteAsync(sql, new { Id = id });
@@ -77,7 +78,7 @@ public class ProductCommandRepository : IProductCommandRepository
             UPDATE Products
             SET Stock     = @NewStock,
                 UpdatedDate = GETDATE()
-            WHERE Id = @ProductId;";
+            WHERE Id = @ProductId AND IsDeleted = 0;";
         using var connection = CreateConnection();
         var rowsAffected = await connection.ExecuteAsync(sql, new
         {

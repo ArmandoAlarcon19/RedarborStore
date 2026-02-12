@@ -40,7 +40,7 @@ public class CategoryCommandRepository : ICategoryCommandRepository
             UPDATE Categories
             SET Name        = @Name,
                 Description = @Description
-            WHERE Id = @Id;";
+            WHERE Id = @Id AND IsDeleted = 0;";
         using var connection = CreateConnection();
         var rowsAffected = await connection.ExecuteAsync(sql, new
         {
@@ -55,7 +55,8 @@ public class CategoryCommandRepository : ICategoryCommandRepository
     public async Task<bool> DeleteAsync(int id)
     {
         const string sql = @"
-            DELETE FROM Categories
+            UPDATE Categories
+            SET IsDeleted = 1, DeletedDate = GETDATE()
             WHERE Id = @Id;";
         using var connection = CreateConnection();
         var rowsAffected = await connection.ExecuteAsync(sql, new { Id = id });
