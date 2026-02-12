@@ -42,4 +42,16 @@ public static class InventoryMovementFixture
     }
 
     public static List<InventoryMovement> CreateEmptyList() => new List<InventoryMovement>();
+
+    public static (IEnumerable<InventoryMovement> Items, int TotalCount) CreatePaginatedList(
+        int pageNumber = 1,
+        int pageSize = 10)
+    {
+        var all = CreateMovementList();
+        var items = all
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+        return (items, all.Count);
+    }
 }

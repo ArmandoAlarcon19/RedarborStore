@@ -14,12 +14,18 @@ public class CategoryQueryRepository : ICategoryQueryRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<Category>> GetAllAsync()
+    public async Task<(IEnumerable<Category> Items, int TotalCount)> GetAllAsync(int pageNumber, int pageSize)
     {
-        return await _context.Categories
+        var totalCount = await _context.Categories.AsNoTracking().CountAsync();
+
+        var items = await _context.Categories
             .AsNoTracking()
             .OrderBy(c => c.Name)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
             .ToListAsync();
+
+        return (items, totalCount);
     }
 
     public async Task<Category?> GetByIdAsync(int id)

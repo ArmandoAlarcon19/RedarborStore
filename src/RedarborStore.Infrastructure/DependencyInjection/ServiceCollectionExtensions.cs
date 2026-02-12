@@ -6,6 +6,8 @@ using RedarborStore.Domain.Interfaces.Queries;
 using RedarborStore.Infrastructure.Commands;
 using RedarborStore.Infrastructure.Data;
 using RedarborStore.Infrastructure.Queries;
+using RedarborStore.Application.Features.Categories.Commands.CreateCategory;
+using FluentValidation;
 
 namespace RedarborStore.Infrastructure.DependencyInjection;
 
@@ -31,7 +33,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ICategoryCommandRepository, CategoryCommandRepository>();
         services.AddScoped<IProductCommandRepository, ProductCommandRepository>();
         services.AddScoped<IInventoryMovementCommandRepository, InventoryMovementCommandRepository>();
-
+        services.AddValidatorsFromAssembly(typeof(CreateCategoryCommand).Assembly);
         return services;
     }
 }

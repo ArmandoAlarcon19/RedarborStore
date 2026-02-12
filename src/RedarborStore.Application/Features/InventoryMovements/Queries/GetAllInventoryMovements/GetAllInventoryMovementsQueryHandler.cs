@@ -1,11 +1,12 @@
 using Application.DTOs.Responses;
 using MediatR;
+using RedarborStore.Application.Common;
 using RedarborStore.Domain.Interfaces.Queries;
 
 namespace RedarborStore.Application.Features.InventoryMovements.Queries.GetAllInventoryMovements;
 
 public class GetAllInventoryMovementsQueryHandler
-    : IRequestHandler<GetAllInventoryMovementsQuery, IEnumerable<InventoryMovementResponseDto>>
+    : IRequestHandler<GetAllInventoryMovementsQuery, PaginatedResult<InventoryMovementResponseDto>>
 {
     private readonly IInventoryMovementQueryRepository _queryRepository;
 
@@ -14,12 +15,12 @@ public class GetAllInventoryMovementsQueryHandler
         _queryRepository = queryRepository;
     }
 
-    public async Task<IEnumerable<InventoryMovementResponseDto>> Handle(
+    public async Task<PaginatedResult<InventoryMovementResponseDto>> Handle(
         GetAllInventoryMovementsQuery request, CancellationToken cancellationToken)
     {
-        var movements = await _queryRepository.GetAllAsync();
+        var (movements, totalCount) = await _queryRepository.GetAllAsync(request.PageNumber, request.PageSize);
 
-        return movements.Select(m => new InventoryMovementResponseDto
+        var items = movements.Select(m => new InventoryMovementResponseDto
         {
             Id = m.Id,
             ProductId = m.ProductId,
@@ -28,5 +29,13 @@ public class GetAllInventoryMovementsQueryHandler
             Reason = m.Reason,
             MovementDate = m.MovementDate
         });
+
+        return new PaginatedResult<InventoryMovementResponseDto>
+        {
+            Items = items,
+            PageNumber = request.PageNumber,
+            PageSize = request.PageSize,
+            TotalCount = totalCount
+        };
     }
 }

@@ -14,12 +14,18 @@ public class InventoryMovementQueryRepository : IInventoryMovementQueryRepositor
         _context = context;
     }
 
-    public async Task<IEnumerable<InventoryMovement>> GetAllAsync()
+      public async Task<(IEnumerable<InventoryMovement> Items, int TotalCount)> GetAllAsync(int pageNumber, int pageSize)
     {
-        return await _context.InventoryMovements
+        var totalCount = await _context.InventoryMovements.AsNoTracking().CountAsync();
+
+        var items = await _context.InventoryMovements
             .AsNoTracking()
             .OrderByDescending(m => m.MovementDate)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
             .ToListAsync();
+
+        return (items, totalCount);
     }
 
     public async Task<IEnumerable<InventoryMovement>> GetByProductAsync(int productId)

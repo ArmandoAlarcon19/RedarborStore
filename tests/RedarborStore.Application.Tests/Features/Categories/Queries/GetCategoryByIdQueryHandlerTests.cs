@@ -3,6 +3,7 @@ using NSubstitute;
 using RedarborStore.Application.Features.Categories.Queries.GetCategoryById;
 using RedarborStore.Application.Tests.Fixtures;
 using RedarborStore.Domain.Entities;
+using RedarborStore.Domain.Exceptions;
 using RedarborStore.Domain.Interfaces.Queries;
 
 namespace RedarborStore.Application.Tests.Features.Categories.Queries;
@@ -34,14 +35,19 @@ public class GetCategoryByIdQueryHandlerTests
     }
 
     [Fact]
-    public async Task Handle_WithNonExistentId_ShouldReturnNull()
+    public async Task Handle_WithNonExistentId_ShouldThrowNotFoundException()
     {
         _queryRepository
             .GetByIdAsync(999)
             .Returns((Category?)null);
+
         var query = new GetCategoryByIdQuery { Id = 999 };
-        var result = await _handler.Handle(query, CancellationToken.None);
-        result.Should().BeNull();
+
+        await FluentActions
+            .Invoking(() => _handler.Handle(query, CancellationToken.None))
+            .Should()
+            .ThrowAsync<NotFoundException>()
+            .WithMessage("*999*");
     }
 
     [Fact]
@@ -60,7 +66,7 @@ public class GetCategoryByIdQueryHandlerTests
     [Fact]
     public async Task Handle_WithInactiveCategory_ShouldStillReturnIt()
     {
-        var category = CategoryFixture.CreateCategory(1, "Old Category", isActive: false);
+        var category = CategoryFixture.CreateCategory(1, "Old Category", isDeleted: false);
         _queryRepository
             .GetByIdAsync(1)
             .Returns(category);

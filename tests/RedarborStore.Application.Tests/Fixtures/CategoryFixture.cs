@@ -8,7 +8,7 @@ public static class CategoryFixture
         int id = 1,
         string name = "Electronics",
         string? description = "Electronic devices",
-        bool isActive = true)
+        bool isDeleted = true)
     {
         return new Category
         {
@@ -30,4 +30,39 @@ public static class CategoryFixture
     }
 
     public static List<Category> CreateEmptyList() => new List<Category>();
+
+    /// <summary>
+    /// Simula la respuesta paginada del repository: retorna una página
+    /// de la lista completa y el totalCount.
+    /// </summary>
+    public static (IEnumerable<Category> Items, int TotalCount) CreatePaginatedList(
+        int pageNumber = 1,
+        int pageSize = 10)
+    {
+        var all = CreateCategoryList();
+        var items = all
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+        return (items, all.Count);
+    }
+    public static List<Category> CreateLargeCategoryList(int count = 25)
+    {
+        return Enumerable.Range(1, count)
+            .Select(i => CreateCategory(i, $"Category {i}", $"Description {i}"))
+            .ToList();
+    }
+
+    public static (IEnumerable<Category> Items, int TotalCount) CreateLargePaginatedList(
+        int pageNumber = 1,
+        int pageSize = 10,
+        int totalItems = 25)
+    {
+        var all = CreateLargeCategoryList(totalItems);
+        var items = all
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+        return (items, all.Count);
+    }
 }

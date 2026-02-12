@@ -14,12 +14,18 @@ public class ProductQueryRepository : IProductQueryRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<Product>> GetAllAsync()
+    public async Task<(IEnumerable<Product> Items, int TotalCount)> GetAllAsync(int pageNumber, int pageSize)
     {
-        return await _context.Products
+        var totalCount = await _context.Products.AsNoTracking().CountAsync();
+
+        var items = await _context.Products
             .AsNoTracking()
             .OrderBy(p => p.Name)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
             .ToListAsync();
+
+        return (items, totalCount);
     }
 
     public async Task<Product?> GetByIdAsync(int id)

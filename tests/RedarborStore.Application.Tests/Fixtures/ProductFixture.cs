@@ -43,4 +43,36 @@ public static class ProductFixture
     }
 
     public static List<Product> CreateEmptyList() => new List<Product>();
+
+    public static (IEnumerable<Product> Items, int TotalCount) CreatePaginatedList(
+        int pageNumber = 1,
+        int pageSize = 10)
+    {
+        var all = CreateProductList();
+        var items = all
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+        return (items, all.Count);
+    }
+
+    public static List<Product> CreateLargeProductList(int count = 25)
+    {
+        return Enumerable.Range(1, count)
+            .Select(i => CreateProduct(i, $"Product {i}", $"Description {i}", 10m * i, i * 5, (i % 3) + 1))
+            .ToList();
+    }
+
+    public static (IEnumerable<Product> Items, int TotalCount) CreateLargePaginatedList(
+        int pageNumber = 1,
+        int pageSize = 10,
+        int totalItems = 25)
+    {
+        var all = CreateLargeProductList(totalItems);
+        var items = all
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+        return (items, all.Count);
+    }
 }

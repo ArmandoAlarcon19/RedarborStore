@@ -1,11 +1,12 @@
 using Application.DTOs.Responses;
 using MediatR;
+using RedarborStore.Application.Common;
 using RedarborStore.Domain.Interfaces.Queries;
 
 namespace RedarborStore.Application.Features.Products.Queries.GetAllProducts;
 
 public class GetAllProductsQueryHandler
-    : IRequestHandler<GetAllProductsQuery, IEnumerable<ProductResponseDto>>
+    : IRequestHandler<GetAllProductsQuery, PaginatedResult<ProductResponseDto>>
 {
     private readonly IProductQueryRepository _queryRepository;
 
@@ -14,12 +15,12 @@ public class GetAllProductsQueryHandler
         _queryRepository = queryRepository;
     }
 
-    public async Task<IEnumerable<ProductResponseDto>> Handle(
+    public async Task<PaginatedResult<ProductResponseDto>> Handle(
         GetAllProductsQuery request, CancellationToken cancellationToken)
     {
-        var products = await _queryRepository.GetAllAsync();
+        var (products, totalCount) = await _queryRepository.GetAllAsync(request.PageNumber, request.PageSize);
 
-        return products.Select(p => new ProductResponseDto
+        var items = products.Select(p => new ProductResponseDto
         {
             Id = p.Id,
             Name = p.Name,
@@ -29,5 +30,13 @@ public class GetAllProductsQueryHandler
             CategoryId = p.CategoryId,
             CreatedDate = p.CreatedDate
         });
+
+        return new PaginatedResult<ProductResponseDto>
+        {
+            Items = items,
+            PageNumber = request.PageNumber,
+            PageSize = request.PageSize,
+            TotalCount = totalCount
+        };
     }
 }
