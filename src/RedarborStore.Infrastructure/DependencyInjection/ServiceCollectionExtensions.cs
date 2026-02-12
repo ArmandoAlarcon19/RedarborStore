@@ -8,6 +8,8 @@ using RedarborStore.Infrastructure.Data;
 using RedarborStore.Infrastructure.Queries;
 using RedarborStore.Application.Features.Categories.Commands.CreateCategory;
 using FluentValidation;
+using MediatR;
+using RedarborStore.Application.Behaviors;
 
 namespace RedarborStore.Infrastructure.DependencyInjection;
 
@@ -34,6 +36,8 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IProductCommandRepository, ProductCommandRepository>();
         services.AddScoped<IInventoryMovementCommandRepository, InventoryMovementCommandRepository>();
         services.AddValidatorsFromAssembly(typeof(CreateCategoryCommand).Assembly);
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CachingBehavior<,>));
         return services;
     }
 }
